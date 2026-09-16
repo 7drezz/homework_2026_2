@@ -28,4 +28,29 @@ QUnit.module("Тестируем функцию compressObject", function() {
 
         assert.deepEqual(result, {}, "Пустой объект должен вернуть пустой объект.");
     });
+
+    QUnit.test("Работает с значением NaN, 0, false", function(assert) {
+        const result = compressObject({
+            name: NaN,
+            age: 0,
+            male: false
+        });
+
+        assert.deepEqual(result, { name: NaN, age: 0, male: false }, "Ключи с значениями NaN, 0, false должны остаться.");
+    });
+
+    QUnit.test("Работает с строками 'null', 'undefined'", function(assert) {
+        const result = compressObject({
+            firstString: "null",
+            secondString: "undefined",
+        });
+
+        assert.deepEqual(result, { firstString: "null", secondString: "undefined" }, "Ключи с строками 'null' и 'undefined' должны остаться.");
+    });
+
+    QUnit.test("Работает с ключом - пустой строкой", function(assert) {
+        const result = compressObject({ "": 0 });
+
+        assert.deepEqual(result, { "": 0 }, "Свойство с ключом - пустой строкой должно остаться.");
+    });
 });
